@@ -1,52 +1,66 @@
 package com.huawei.codecraft;
 
-import java.io.BufferedOutputStream;
-import java.io.PrintStream;
-import java.util.Scanner;
+import com.huawei.codecraft.utils.LogUtil;
+
+import java.io.*;
 
 public class Main {
 
-    private static final Scanner inStream = new Scanner(System.in);
+    private static final BufferedReader inStream = new BufferedReader(new InputStreamReader(System.in));
 
-    private static final PrintStream outStream = new PrintStream(new BufferedOutputStream(System.out));
+    private static final PrintStream outStream = new PrintStream(new BufferedOutputStream(System.out), true);
 
-    public static void main(String[] args) {
+    private static MainContent mainContent = new MainContent();
+
+    public static void main(String[] args) throws IOException {
         schedule();
     }
 
-    private static void schedule() {
-        readUtilOK();
-        outStream.println("OK");
-        outStream.flush();
-
+    private static void schedule() throws IOException {
+        readUtilOK(0);
+        outStream.print("OK\n");
         int frameID;
-        while (inStream.hasNextLine()) {
-            String line = inStream.nextLine();
+        String line;
+        while ((line = inStream.readLine()) != null) {
             String[] parts = line.split(" ");
             frameID = Integer.parseInt(parts[0]);
-            readUtilOK();
+            readUtilOK(frameID);
 
-            outStream.printf("%d\n", frameID);
+            // 构造输出结果
+            StringBuilder builder = new StringBuilder();
+            builder.append(frameID).append('\n');
             int lineSpeed = 3;
             double angleSpeed = 1.5;
             for (int robotId = 0; robotId < 4; robotId++) {
-                outStream.printf("forward %d %d\n", robotId, lineSpeed);
-                outStream.printf("rotate %d %f\n", robotId, angleSpeed);
+                builder.append("forward").append(' ').append(robotId).append(' ').append(lineSpeed).append('\n');
+                builder.append("rotate").append(' ').append(robotId).append(' ').append(angleSpeed).append('\n');
             }
-            outStream.print("OK\n");
-            outStream.flush();
+            builder.append("OK").append('\n');
+            outStream.print(builder);
         }
     }
 
-    private static boolean readUtilOK() {
+    private static boolean readUtilOK(int frameID) throws IOException {
+        // 记录单个回合数据
+        StringBuilder roundData = new StringBuilder();
         String line;
-        while (inStream.hasNextLine()) {
-            line = inStream.nextLine();
+        while ((line = inStream.readLine()) != null) {
+            // 初始化地图结束标记
+            if (101 == frameID) {
+                mainContent.setInitMapEnd(true);
+            }
             if ("OK".equals(line)) {
+                // 记录单个回合数据到全局变量
+                if (mainContent.isInitMapEnd()) {
+                    mainContent.setRoundData(roundData.toString());
+                    // LogUtil.writeLog(mainContent.getRoundData());
+                }
                 return true;
             }
-            // do something;
-            // todo
+            // 拼接单个回合数据
+            if (mainContent.isInitMapEnd()) {
+                roundData.append(line).append("\n");
+            }
         }
         return false;
     }
