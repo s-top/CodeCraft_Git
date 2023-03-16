@@ -7,4 +7,7 @@ import com.huawei.codecraft.tree.ITree;
  */
 public interface ICondition extends ITree {
 
+    boolean isNegation();
+
+    void setNegation(boolean negation);
 }
