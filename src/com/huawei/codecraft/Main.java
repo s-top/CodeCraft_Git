@@ -3,6 +3,9 @@ package com.huawei.codecraft;
 import com.huawei.codecraft.constant.Constants;
 import com.huawei.codecraft.utils.LogUtil;
 import com.huawei.codecraft.utils.ParseUtil;
+import com.huawei.codecraft.utils.StrategyUtil;
+import com.huawei.codecraft.utils.TreeUtil;
+import sun.reflect.generics.tree.Tree;
 
 import java.io.*;
 
@@ -37,7 +40,7 @@ public class Main {
             StringBuilder builder = new StringBuilder();
             builder.append(frameID).append('\n');
             if (mainContent.isInitMapEnd()) {
-                // todo
+                TreeUtil.processTree(mainContent, builder);
             }
             builder.append("OK").append('\n');
             outStream.print(builder);

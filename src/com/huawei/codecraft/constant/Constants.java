@@ -61,4 +61,13 @@ public interface Constants {
         int INDEX_PIN = 4;
         int INDEX_POUT = 5;
     }
+
+    interface Point {
+        int INT_ZERO = 0;
+        float FLOAT_ZERO = 0;
+
+        float STEP_FU = -0.1f;
+        float STEP_ZHENG = 0.1f;
+        float DEFAULT_SPEED = 2f;
+    }
 }

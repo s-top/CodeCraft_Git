@@ -34,13 +34,7 @@ public class Point {
         }
         float distanceX = this.x - p.x;
         float distanceY = this.y - p.y;
-        if (distanceX == 0) {
-            return (float) Math.abs(distanceY);
-        } else if (distanceY == 0) {
-            return (float) Math.abs(distanceX);
-        } else {
-            return (float) Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-        }
+        return (float) Math.sqrt(distanceX * distanceX + distanceY * distanceY);
     }
 
     /**
@@ -53,6 +47,22 @@ public class Point {
         float distanceX = p.x - this.x;
         float distanceY = p.y - this.y;
         return (float) Math.atan2(distanceY, distanceX);
+    }
+
+    /**
+     * 获取象限
+     */
+    public int getQuardrant(Point p) {
+        if (p == null) {
+            return 0;
+        }
+        if (Float.compare(p.y, this.y) > 0) {
+            // 一、二象限
+            return 12;
+        } else {
+            // 三、四象限
+            return 34;
+        }
     }
 
     @Override

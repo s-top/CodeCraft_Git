@@ -1,49 +1,40 @@
 package com.huawei.codecraft.utils;
 
-import com.huawei.codecraft.constant.Policy;
+import com.huawei.codecraft.MainContent;
 import com.huawei.codecraft.tree.impl.BTree;
 import com.huawei.codecraft.tree.impl.BTreeBuilder;
-import com.huawei.codecraft.tree.impl.composite.ParallelImpl;
+import com.huawei.codecraft.tree.impl.action.ActionBack;
+import com.huawei.codecraft.tree.impl.action.ActionBuy;
+import com.huawei.codecraft.tree.impl.action.ActionGo;
+import com.huawei.codecraft.tree.impl.action.ActionSell;
 import com.huawei.codecraft.tree.impl.composite.SelectorImpl;
 import com.huawei.codecraft.tree.impl.composite.SequenceImpl;
-import com.huawei.codecraft.tree.impl.decorator.Repeat;
+import com.huawei.codecraft.tree.impl.condition.ConditionHasArrived;
 
 public class TreeUtil {
 
-    //测试行为树
-    public static void testBT() {
-//        BTreeBuilder builder = new BTreeBuilder();
-//        BTree behaviorTree =
-//                builder.addBehaviour(new SelectorImpl())
-//                        .addBehaviour(new SequenceImpl())
-//                        .addBehaviour(new ConditionIsSeeEnemy())
-//                        .back()
-//                        .addBehaviour(new SelectorImpl())
-//                        .addBehaviour(new SequenceImpl())
-//                        .addBehaviour(new ConditionIsHealthLow())
-//                        .back()
-//                        .addBehaviour(new ActionRunaway())
-//                        .back()
-//                        .back()
-//
-//                        .addBehaviour(new ParallelImpl(Policy.RequireAll, Policy.RequireOne))
-//                        .addBehaviour(new ConditionIsEnemyDead(true))
-//                        .back()
-//                        .addBehaviour(new Repeat())
-//                        .addBehaviour(new ActionAttack())
-//                        .back()
-//                        .back()
-//                        .back()
-//                        .back()
-//                        .back()
-//                        .addBehaviour(new ActionPatrol())
-//                        .end();
-//
-//        //模拟执行行为树
-//        for (int i = 0; i < 10; ++i) {
-//            behaviorTree.process();
-//            System.out.println("--------------" + i + "------------");
-//        }
-//        System.out.println("pause ");
+    public static void processTree(MainContent mainContent, StringBuilder builder) {
+        BTreeBuilder treeBuilder = new BTreeBuilder();
+        BTree behaviorTree = treeBuilder
+            .addBehaviour(new SelectorImpl())
+                // 到-卖
+                .addBehaviour(new SequenceImpl())
+                    .addBehaviour(new ConditionHasArrived(mainContent, 5)).back()
+                    .addBehaviour(new ActionSell(mainContent, builder)).back()
+                .back()
+                // 回
+                .addBehaviour(new ActionBack(mainContent, builder)).back()
+            .back()
+            .addBehaviour(new SelectorImpl())
+                // 到-买
+                .addBehaviour(new SequenceImpl())
+                    .addBehaviour(new ConditionHasArrived(mainContent, 1)).back()
+                    .addBehaviour(new ActionBuy(mainContent, builder)).back()
+                .back()
+                // 去
+                .addBehaviour(new ActionGo(mainContent, builder)).back()
+            .back()
+        .end();
+        behaviorTree.process();
     }
 }
