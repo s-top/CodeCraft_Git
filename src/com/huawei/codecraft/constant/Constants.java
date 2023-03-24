@@ -15,6 +15,8 @@ public interface Constants {
 
         String WHITE_SPACE = " ";
 
+        String UNDER_LINE = "-";
+
     }
 
     /**

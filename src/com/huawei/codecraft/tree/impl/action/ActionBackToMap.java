@@ -8,15 +8,18 @@ import com.huawei.codecraft.tree.ITree;
 import com.huawei.codecraft.tree.base.BaseAction;
 import com.huawei.codecraft.utils.StrategyUtil;
 
-public class ActionBack extends BaseAction {
+public class ActionBackToMap extends BaseAction {
 
     MainContent mainContent;
 
     StringBuilder builder;
 
-    public ActionBack(MainContent mainContent, StringBuilder builder) {
+    int rId;
+
+    public ActionBackToMap(MainContent mainContent, StringBuilder builder, int rId) {
         this.mainContent = mainContent;
         this.builder = builder;
+        this.rId = rId;
     }
 
     @Override
@@ -24,10 +27,15 @@ public class ActionBack extends BaseAction {
         if (null == mainContent || null == builder) {
             return NodeStatus.Failure;
         }
-        Workbench w = mainContent.getWorkbenches().stream().filter(workbench -> workbench.getId() == 5).findFirst().orElse(null);
-        Robot r = mainContent.getRobots().stream().filter(robot -> robot.getId() == 0).findFirst().orElse(null);
-        StrategyUtil.moveToTarget(r, builder, w.getPoint());
-        return NodeStatus.Success;
+        Robot r = mainContent.getRobots().stream()
+                .filter(robot -> robot.getId() == rId)
+                .findFirst()
+                .orElse(null);
+        if (StrategyUtil.pointOutOfMap(r.getPoint())) {
+            StrategyUtil.forwardToMap(r, builder);
+            return NodeStatus.Success;
+        }
+        return NodeStatus.Failure;
     }
 
     @Override

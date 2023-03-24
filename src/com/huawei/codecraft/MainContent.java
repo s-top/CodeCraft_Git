@@ -1,9 +1,10 @@
 package com.huawei.codecraft;
 
+import com.huawei.codecraft.entry.AvailbleWorkInfo;
 import com.huawei.codecraft.role.Robot;
 import com.huawei.codecraft.role.Workbench;
 
-import java.util.List;
+import java.util.*;
 
 public class MainContent {
     /**
@@ -30,6 +31,63 @@ public class MainContent {
      * 单个回合数据
      */
     private String roundData;
+
+    Map<String, List<AvailbleWorkInfo>> robotAndWorkInfosMap;
+
+    Map<String, List<AvailbleWorkInfo>> productAndWorkInfoMap;
+
+    Map<Integer, AvailbleWorkInfo> rIdAndAvailbleWorkInfoMap;
+
+    Map<Integer, List<Integer>> rIdAndWids = new HashMap<>();
+    {
+        rIdAndWids.put(0, Collections.singletonList(1));
+        rIdAndWids.put(1, Arrays.asList(2, 3));
+        rIdAndWids.put(2, Arrays.asList(4, 5, 6));
+        rIdAndWids.put(3, Collections.singletonList(7));
+    }
+
+    Map<Integer, List<Integer>> pIdAndWids = new HashMap<>();
+    {
+        pIdAndWids.put(1, Arrays.asList(4, 5, 9));
+        pIdAndWids.put(2, Arrays.asList(4, 6, 9));
+        pIdAndWids.put(3, Arrays.asList(5, 6, 9));
+        pIdAndWids.put(4, Arrays.asList(7, 9));
+        pIdAndWids.put(5, Arrays.asList(7, 9));
+        pIdAndWids.put(6, Arrays.asList(7, 9));
+        pIdAndWids.put(7, Arrays.asList(9, 9));
+    }
+
+    public Map<String, List<AvailbleWorkInfo>> getRobotAndWorkInfosMap() {
+        return robotAndWorkInfosMap;
+    }
+
+    public void setRobotAndWorkInfosMap(Map<String, List<AvailbleWorkInfo>> robotAndWorkInfosMap) {
+        this.robotAndWorkInfosMap = robotAndWorkInfosMap;
+    }
+
+    public Map<Integer, AvailbleWorkInfo> getrIdAndAvailbleWorkInfoMap() {
+        return rIdAndAvailbleWorkInfoMap;
+    }
+
+    public void setrIdAndAvailbleWorkInfoMap(Map<Integer, AvailbleWorkInfo> rIdAndAvailbleWorkInfoMap) {
+        this.rIdAndAvailbleWorkInfoMap = rIdAndAvailbleWorkInfoMap;
+    }
+
+    public Map<String, List<AvailbleWorkInfo>> getProductAndWorkInfoMap() {
+        return productAndWorkInfoMap;
+    }
+
+    public void setProductAndWorkInfoMap(Map<String, List<AvailbleWorkInfo>> productAndWorkInfoMap) {
+        this.productAndWorkInfoMap = productAndWorkInfoMap;
+    }
+
+    public Map<Integer, List<Integer>> getrIdAndWids() {
+        return rIdAndWids;
+    }
+
+    public Map<Integer, List<Integer>> getpIdAndWids() {
+        return pIdAndWids;
+    }
 
     public boolean isInitMapEnd() {
         return initMapEnd;

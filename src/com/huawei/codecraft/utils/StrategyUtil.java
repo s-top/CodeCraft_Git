@@ -1,14 +1,61 @@
 package com.huawei.codecraft.utils;
 
+import com.huawei.codecraft.MainContent;
 import com.huawei.codecraft.action.ActionBuilder;
 import com.huawei.codecraft.constant.Constants;
+import com.huawei.codecraft.entry.AvailbleWorkInfo;
 import com.huawei.codecraft.role.Point;
 import com.huawei.codecraft.role.Robot;
+import com.huawei.codecraft.role.Workbench;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 解析工具类
  */
 public class StrategyUtil {
+
+    public static void forwardToMap(Robot robot, StringBuilder builder) {
+
+    }
+
+    public static boolean pointOutOfMap(Point p) {
+        return false;
+    }
+
+    public static AvailbleWorkInfo getTheClosedWorkByRoleId(int rId, MainContent mainContent) {
+        List<AvailbleWorkInfo> availbleWorkInfoList = new ArrayList<>();
+        List<Integer> wIds = mainContent.getrIdAndWids().get(rId);
+        for (Integer wId : wIds) {
+            availbleWorkInfoList.addAll(mainContent.getRobotAndWorkInfosMap()
+                    .get(rId + Constants.Global.UNDER_LINE + wId));
+        }
+        return availbleWorkInfoList.stream()
+                .min(Comparator.comparing(AvailbleWorkInfo::getDistance))
+                .orElse(null);
+    }
+
+    public static AvailbleWorkInfo getTheClosedWorkByProductId(Robot robot, MainContent mainContent) {
+        List<AvailbleWorkInfo> availbleWorkInfoList = new ArrayList<>();
+        List<Integer> wIds = mainContent.getpIdAndWids().get(robot.getProduct());
+        List<Workbench> workbenches = mainContent.getWorkbenches().stream()
+                .filter(w -> wIds.contains(w.getId()))
+                .collect(Collectors.toList());
+        workbenches.forEach(w -> {
+            AvailbleWorkInfo a = new AvailbleWorkInfo();
+            a.setwPoint(w.getPoint());
+            a.setwIndex(w.getIndex());
+            a.setrId(robot.getId());
+            a.setDistance(robot.getPoint().getDistance(w.getPoint()));
+            availbleWorkInfoList.add(a);
+        });
+        return availbleWorkInfoList.stream()
+                .min(Comparator.comparing(AvailbleWorkInfo::getDistance))
+                .orElse(null);
+    }
 
     public static void moveToTarget(Robot r, StringBuilder builder, Point target) {
         int quadrant = r.getPoint().getQuardrant(target);

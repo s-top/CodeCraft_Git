@@ -2,6 +2,7 @@ package com.huawei.codecraft.tree.impl.action;
 
 import com.huawei.codecraft.MainContent;
 import com.huawei.codecraft.constant.NodeStatus;
+import com.huawei.codecraft.entry.AvailbleWorkInfo;
 import com.huawei.codecraft.role.Robot;
 import com.huawei.codecraft.role.Workbench;
 import com.huawei.codecraft.tree.ITree;
@@ -14,9 +15,12 @@ public class ActionGo extends BaseAction {
 
     StringBuilder builder;
 
-    public ActionGo(MainContent mainContent, StringBuilder builder) {
+    int rId;
+
+    public ActionGo(MainContent mainContent, StringBuilder builder, int rId) {
         this.mainContent = mainContent;
         this.builder = builder;
+        this.rId = rId;
     }
 
     @Override
@@ -24,10 +28,27 @@ public class ActionGo extends BaseAction {
         if (null == mainContent || null == builder) {
             return NodeStatus.Failure;
         }
-        Workbench w = mainContent.getWorkbenches().stream().filter(workbench -> workbench.getId() == 1).findFirst().orElse(null);
-        Robot r = mainContent.getRobots().stream().filter(robot -> robot.getId() == 0).findFirst().orElse(null);
-        StrategyUtil.moveToTarget(r, builder, w.getPoint());
-        return NodeStatus.Success;
+        Robot r = mainContent.getRobots().stream()
+                .filter(robot -> robot.getId() == rId)
+                .findFirst().orElse(null);
+        if (r.getProduct() == 0) {
+            AvailbleWorkInfo a = mainContent.getrIdAndAvailbleWorkInfoMap().get(rId);
+            if (null == a) {
+                a = StrategyUtil.getTheClosedWorkByRoleId(r.getId(), mainContent);
+            }
+            a.setrPoint(r.getPoint());
+            a.setDistance(r.getPoint().getDistance(a.getwPoint()));
+            a.setGo(true);
+
+            // 移动
+            StrategyUtil.moveToTarget(r, builder, a.getwPoint());
+
+            // 填充目标点
+            mainContent.getrIdAndAvailbleWorkInfoMap().put(rId, a);
+
+            return NodeStatus.Success;
+        }
+        return NodeStatus.Failure;
     }
 
     @Override

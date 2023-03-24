@@ -13,9 +13,12 @@ public class ActionBuy extends BaseAction {
 
     StringBuilder builder;
 
-    public ActionBuy(MainContent mainContent, StringBuilder builder) {
+    int rId;
+
+    public ActionBuy(MainContent mainContent, StringBuilder builder, int rId) {
         this.mainContent = mainContent;
         this.builder = builder;
+        this.rId = rId;
     }
 
     @Override
@@ -23,9 +26,15 @@ public class ActionBuy extends BaseAction {
         if (null == mainContent || null == builder) {
             return NodeStatus.Failure;
         }
-        Robot r = mainContent.getRobots().stream().filter(robot -> robot.getId() == 0).findFirst().orElse(null);
+        Robot r = mainContent.getRobots().stream()
+                .filter(robot -> robot.getId() == rId)
+                .findFirst()
+                .orElse(null);
         if (r.getProduct() == 0) {
             builder.append(ActionBuilder.buyAction(r.getId()));
+
+            // 目标点设置为空
+            mainContent.getrIdAndAvailbleWorkInfoMap().put(rId, null);
             return NodeStatus.Success;
         }
         return NodeStatus.Failure;

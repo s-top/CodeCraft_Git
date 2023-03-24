@@ -1,13 +1,15 @@
 package com.huawei.codecraft.tree.impl.action;
 
 import com.huawei.codecraft.MainContent;
-import com.huawei.codecraft.action.ActionBuilder;
 import com.huawei.codecraft.constant.NodeStatus;
+import com.huawei.codecraft.entry.AvailbleWorkInfo;
 import com.huawei.codecraft.role.Robot;
+import com.huawei.codecraft.role.Workbench;
 import com.huawei.codecraft.tree.ITree;
 import com.huawei.codecraft.tree.base.BaseAction;
+import com.huawei.codecraft.utils.StrategyUtil;
 
-public class ActionSell extends BaseAction {
+public class ActionBackToWork extends BaseAction {
 
     MainContent mainContent;
 
@@ -15,7 +17,7 @@ public class ActionSell extends BaseAction {
 
     int rId;
 
-    public ActionSell(MainContent mainContent, StringBuilder builder, int rId) {
+    public ActionBackToWork(MainContent mainContent, StringBuilder builder, int rId) {
         this.mainContent = mainContent;
         this.builder = builder;
         this.rId = rId;
@@ -28,13 +30,21 @@ public class ActionSell extends BaseAction {
         }
         Robot r = mainContent.getRobots().stream()
                 .filter(robot -> robot.getId() == rId)
-                .findFirst()
-                .orElse(null);
+                .findFirst().orElse(null);
         if (r.getProduct() != 0) {
-            builder.append(ActionBuilder.sellAction(r.getId()));
+            AvailbleWorkInfo a = mainContent.getrIdAndAvailbleWorkInfoMap().get(rId);
+            if (null == a) {
+                a = StrategyUtil.getTheClosedWorkByProductId(r, mainContent);
+            }
+            a.setrPoint(r.getPoint());
+            a.setDistance(r.getPoint().getDistance(a.getwPoint()));
+            a.setGo(false);
 
-            // 目标点设置为空
-            mainContent.getrIdAndAvailbleWorkInfoMap().put(rId, null);
+            // 移动
+            StrategyUtil.moveToTarget(r, builder, a.getwPoint());
+
+            // 填充目标点
+            mainContent.getrIdAndAvailbleWorkInfoMap().put(rId, a);
             return NodeStatus.Success;
         }
         return NodeStatus.Failure;

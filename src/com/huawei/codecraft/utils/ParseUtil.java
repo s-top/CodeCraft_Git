@@ -2,12 +2,16 @@ package com.huawei.codecraft.utils;
 
 import com.huawei.codecraft.MainContent;
 import com.huawei.codecraft.constant.Constants;
+import com.huawei.codecraft.entry.AvailbleWorkInfo;
 import com.huawei.codecraft.role.Point;
 import com.huawei.codecraft.role.Robot;
 import com.huawei.codecraft.role.Workbench;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 解析工具类
@@ -26,6 +30,7 @@ public class ParseUtil {
         for (int i = 1; i <= workbenchNum; i++) {
             String[] row = rows[i].split(Constants.Global.WHITE_SPACE);
             Workbench workbench = new Workbench();
+            workbench.setIndex(i - 1);
             workbench.setId(Integer.parseInt(row[Constants.Workbench.INDEX_ID]));
             workbench.setPoint(new Point(Float.parseFloat(row[Constants.Workbench.INDEX_X]),
                     Float.parseFloat(row[Constants.Workbench.INDEX_Y])));
@@ -45,8 +50,8 @@ public class ParseUtil {
             robot.setId(robotIndex);
             robot.setWorkbenchId(Integer.parseInt(row[Constants.Robot.INDEX_WID]));
             robot.setProduct(Integer.parseInt(row[Constants.Robot.INDEX_P]));
-            robot.setTimeParam(Integer.parseInt(row[Constants.Robot.INDEX_TIME]));
-            robot.setCollideParam(Integer.parseInt(row[Constants.Robot.INDEX_COLLIDE]));
+            robot.setTimeParam(Float.parseFloat(row[Constants.Robot.INDEX_TIME]));
+            robot.setCollideParam(Float.parseFloat(row[Constants.Robot.INDEX_COLLIDE]));
             robot.setAngularSpeed(Float.parseFloat(row[Constants.Robot.INDEX_AS]));
             robot.setLineSpeed(new Point(Float.parseFloat(row[Constants.Robot.INDEX_LS_X]),
                     Float.parseFloat(row[Constants.Robot.INDEX_LS_Y])));
@@ -57,5 +62,49 @@ public class ParseUtil {
             robotIndex++;
         }
         mainContent.setRobots(robots);
+
+        // 解析机器人到各点距离
+        initRobotAndWorkInfosMap(mainContent);
+    }
+
+    private static void initRobotAndWorkInfosMap(MainContent mainContent) {
+        Map<String, List<AvailbleWorkInfo>> robotAndWorkInfosMap = new HashMap<>();
+        List<Robot> robots = mainContent.getRobots();
+        List<Workbench> workbenches = mainContent.getWorkbenches();
+        for (Map.Entry<Integer, List<Integer>> entry : mainContent.getrIdAndWids().entrySet()) {
+            int robotId = entry.getKey();
+            List<Integer> workIds = entry.getValue();
+            Robot robot = robots.stream()
+                    .filter(r -> r.getId() == robotId)
+                    .findFirst()
+                    .orElse(null);
+            List<Workbench> workbenchList = workbenches.stream()
+                    .filter(w -> workIds.contains(w.getId()))
+                    .collect(Collectors.toList());
+            buildRobotIdAndAvailbleWorkInfosMap(robot, workbenchList, robotAndWorkInfosMap);
+        }
+        mainContent.setRobotAndWorkInfosMap(robotAndWorkInfosMap);
+    }
+
+    private static void buildRobotIdAndAvailbleWorkInfosMap(Robot robot, List<Workbench> workbenchList,
+        Map<String, List<AvailbleWorkInfo>> robotAndWorkInfosMap) {
+        for (Workbench w : workbenchList) {
+            AvailbleWorkInfo a = new AvailbleWorkInfo();
+            a.setrId(robot.getId());
+            a.setwId(w.getId());
+            a.setwIndex(w.getIndex());
+            a.setrPoint(robot.getPoint());
+            a.setwPoint(w.getPoint());
+            a.setDistance(robot.getPoint().getDistance(w.getPoint()));
+            String id = robot.getId() + Constants.Global.UNDER_LINE + w.getId();
+            if (robotAndWorkInfosMap.containsKey(id)) {
+                List<AvailbleWorkInfo> availbleWorkInfos = robotAndWorkInfosMap.get(id);
+                availbleWorkInfos.add(a);
+            } else {
+                List<AvailbleWorkInfo> availbleWorkInfos = new ArrayList<>();
+                availbleWorkInfos.add(a);
+                robotAndWorkInfosMap.put(id, availbleWorkInfos);
+            }
+        }
     }
 }
