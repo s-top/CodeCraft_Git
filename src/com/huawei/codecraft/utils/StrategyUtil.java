@@ -107,6 +107,26 @@ public class StrategyUtil {
             a.setwPoint(w.getPoint());
             a.setwIndex(w.getIndex());
             a.setrId(robot.getId());
+            a.setwId(w.getId());
+            a.setDistance(robot.getPoint().getDistance(w.getPoint()));
+            availbleWorkInfoList.add(a);
+        });
+        return availbleWorkInfoList.stream()
+                .min(Comparator.comparing(AvailbleWorkInfo::getDistance))
+                .orElse(null);
+    }
+
+    public static AvailbleWorkInfo getTheClosedLevelWorkByRoleId(Robot robot, MainContent mainContent, List<Integer> wIds) {
+        List<AvailbleWorkInfo> availbleWorkInfoList = new ArrayList<>();
+        List<Workbench> workbenches = mainContent.getWorkbenches().stream()
+                .filter(w -> wIds.contains(w.getId()) && w.getProductOut() == 1)
+                .collect(Collectors.toList());
+        workbenches.forEach(w -> {
+            AvailbleWorkInfo a = new AvailbleWorkInfo();
+            a.setwPoint(w.getPoint());
+            a.setwIndex(w.getIndex());
+            a.setrId(robot.getId());
+            a.setwId(w.getId());
             a.setDistance(robot.getPoint().getDistance(w.getPoint()));
             availbleWorkInfoList.add(a);
         });

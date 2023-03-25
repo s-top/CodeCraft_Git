@@ -43,8 +43,38 @@ public class MainContent {
     {
         rIdAndWids.put(0, Collections.singletonList(1));
         rIdAndWids.put(1, Arrays.asList(2, 3));
-        rIdAndWids.put(2, Arrays.asList(4, 5, 6));
+        rIdAndWids.put(2, Arrays.asList(1, 2, 3));
         rIdAndWids.put(3, Collections.singletonList(7));
+    }
+
+    List<Integer> levelOneWorkIds = Arrays.asList(1, 2, 3);
+
+    List<Integer> levelTwoWorkIds = Arrays.asList(4, 5, 6);
+
+    List<Integer> levelThreeWorkIds = Collections.singletonList(7);
+
+    public List<Integer> getLevelOneWorkIds() {
+        return levelOneWorkIds;
+    }
+
+    public void setLevelOneWorkIds(List<Integer> levelOneWorkIds) {
+        this.levelOneWorkIds = levelOneWorkIds;
+    }
+
+    public List<Integer> getLevelTwoWorkIds() {
+        return levelTwoWorkIds;
+    }
+
+    public void setLevelTwoWorkIds(List<Integer> levelTwoWorkIds) {
+        this.levelTwoWorkIds = levelTwoWorkIds;
+    }
+
+    public List<Integer> getLevelThreeWorkIds() {
+        return levelThreeWorkIds;
+    }
+
+    public void setLevelThreeWorkIds(List<Integer> levelThreeWorkIds) {
+        this.levelThreeWorkIds = levelThreeWorkIds;
     }
 
     Map<Integer, List<Integer>> pIdAndWids = new HashMap<>();
