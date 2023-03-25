@@ -8,7 +8,6 @@ import com.huawei.codecraft.role.Point;
 import com.huawei.codecraft.role.Robot;
 import com.huawei.codecraft.role.Workbench;
 
-import javax.print.DocFlavor;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -123,7 +122,7 @@ public class StrategyUtil {
             forward = (float) (forward + 2 * Math.PI);
         }
         // 粗调角度，区分象限
-        if (Float.compare(Math.abs(forward - degree), Constants.Point.STEP_ZHENG) < 0) {
+        if (Float.compare(Math.abs(forward - degree), 0.001f) < 0) {
             builder.append(ActionBuilder.rotateAction(r.getId(), Constants.Point.FLOAT_ZERO));
             return;
         }
