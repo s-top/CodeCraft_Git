@@ -16,7 +16,7 @@ public class LogUtil {
     public static void writeLog(String logValue) {
         FileWriter fw = null;
         try {
-            File f = new File("D:\\log.txt");
+            File f = new File("C:\\Users\\Administrator\\Desktop\\test\\WindowsRelease\\WindowsRelease\\SDK\\log.txt");
             fw = new FileWriter(f, true);
         } catch (IOException e) {
             e.printStackTrace();

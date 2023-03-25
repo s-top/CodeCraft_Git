@@ -60,11 +60,7 @@ public class Point {
         }
         float distanceX = p.x - this.x;
         float distanceY = p.y - this.y;
-        float currentDegree = (float) Math.atan2(distanceY, distanceX);
-        if (Float.compare(currentDegree, Constants.Point.FLOAT_ZERO) < 0) {
-            return (int) (currentDegree + 2 * Math.PI);
-        }
-        return currentDegree;
+        return (float) Math.atan2(distanceY, distanceX);
     }
 
     @Override

@@ -42,9 +42,9 @@ public class MainContent {
 
     {
         rIdAndWids.put(0, Collections.singletonList(1));
-        rIdAndWids.put(1, Collections.singletonList(2));
-        rIdAndWids.put(2, Collections.singletonList(3));
-        rIdAndWids.put(3, Arrays.asList(4, 5, 6));
+        rIdAndWids.put(1, Arrays.asList(2, 3));
+        rIdAndWids.put(2, Arrays.asList(4, 5, 6));
+        rIdAndWids.put(3, Collections.singletonList(7));
     }
 
     Map<Integer, List<Integer>> pIdAndWids = new HashMap<>();

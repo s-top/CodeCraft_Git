@@ -7,6 +7,7 @@ import com.huawei.codecraft.role.Robot;
 import com.huawei.codecraft.role.Workbench;
 import com.huawei.codecraft.tree.ITree;
 import com.huawei.codecraft.tree.base.BaseAction;
+import com.huawei.codecraft.utils.LogUtil;
 import com.huawei.codecraft.utils.StrategyUtil;
 
 public class ActionBackToWork extends BaseAction {

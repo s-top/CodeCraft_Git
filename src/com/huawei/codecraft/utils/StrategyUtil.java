@@ -118,19 +118,21 @@ public class StrategyUtil {
     public static void moveToTarget(Robot r, StringBuilder builder, Point target) {
         float degree = r.getPoint().getQuardrant(target);
         float forward = r.getForward();
-        if (isLessThanIntZero(forward, Constants.Point.FLOAT_ZERO)) {
-            forward = (float) (forward + 2 * Math.PI);
-        }
         // 粗调角度，区分象限
-        if (Float.compare(Math.abs(forward - degree), 0.001f) < 0) {
+        if (Float.compare(Math.abs(forward - degree), 0.1f) < 0) {
             builder.append(ActionBuilder.rotateAction(r.getId(), Constants.Point.FLOAT_ZERO));
             return;
         }
-        if (isLessThanIntZero(forward, degree)) {
-            builder.append(ActionBuilder.rotateAction(r.getId(), (float) Math.PI));
+        if (degree * forward > 0) {
+            if (isLessThanIntZero(forward, degree)) {
+                builder.append(ActionBuilder.rotateAction(r.getId(), (float) Math.PI));
+            }
+            if (isMoreThanIntZero(forward, degree)) {
+                builder.append(ActionBuilder.rotateAction(r.getId(), (float) (-1 * Math.PI)));
+            }
         }
-        if (isMoreThanIntZero(forward, degree)) {
-            builder.append(ActionBuilder.rotateAction(r.getId(), (float) (-1 * Math.PI)));
+        if (degree * forward <= 0) {
+            builder.append(ActionBuilder.rotateAction(r.getId(), (float) Math.PI));
         }
         builder.append(ActionBuilder.forwardAction(r.getId(), Math.min(r.getPoint().getDistance(target) * 2,
                 Constants.Point.DEFAULT_SPEED)));

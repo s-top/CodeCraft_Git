@@ -14,7 +14,7 @@ import com.huawei.codecraft.tree.impl.condition.ConditionOutOfMap;
 public class TreeUtil {
 
     public static void processTree(MainContent mainContent, StringBuilder builder) {
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 3; i++) {
             BTreeBuilder treeBuilder = new BTreeBuilder();
             BTree behaviorTree = treeBuilder
                 .addBehaviour(new SelectorImpl())
