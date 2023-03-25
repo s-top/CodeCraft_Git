@@ -14,7 +14,7 @@ import com.huawei.codecraft.tree.impl.condition.ConditionOutOfMap;
 public class TreeUtil {
 
     public static void processTree(MainContent mainContent, StringBuilder builder) {
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 4; i++) {
             BTreeBuilder treeBuilder = new BTreeBuilder();
             BTree behaviorTree = treeBuilder
                 .addBehaviour(new SelectorImpl())
@@ -32,22 +32,21 @@ public class TreeUtil {
                         .back()
                         .addBehaviour(new ActionBackToWork(mainContent, builder, i)).back()
                     .back()
-                .back()
-                .addBehaviour(new SelectorImpl())
-                    // 到-买
-                    .addBehaviour(new SequenceImpl())
-                        .addBehaviour(new ConditionGo(mainContent, i)).back()
-                        .addBehaviour(new ConditionHasArrived(mainContent, i)).back()
-                        .addBehaviour(new ActionBuy(mainContent, builder, i)).back()
+                    .addBehaviour(new SelectorImpl())
+                        // 到-买
+                        .addBehaviour(new SequenceImpl())
+                            .addBehaviour(new ConditionGo(mainContent, i)).back()
+                            .addBehaviour(new ConditionHasArrived(mainContent, i)).back()
+                            .addBehaviour(new ActionBuy(mainContent, builder, i)).back()
+                        .back()
+                        // 去
+                        .addBehaviour(new SequenceImpl())
+                            .addBehaviour(new ConditionOutOfMap(mainContent, i)).back()
+                            .addBehaviour(new ActionBackToMap(mainContent, builder, i)).back()
+                        .back()
+                        .addBehaviour(new ActionGo(mainContent, builder, i)).back()
                     .back()
-                    // 去
-                    .addBehaviour(new SequenceImpl())
-                        .addBehaviour(new ConditionOutOfMap(mainContent, i)).back()
-                        .addBehaviour(new ActionBackToMap(mainContent, builder, i)).back()
-                    .back()
-                    .addBehaviour(new ActionGo(mainContent, builder, i)).back()
-                .back()
-            .end();
+                .end();
             behaviorTree.process();
         }
     }

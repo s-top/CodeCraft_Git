@@ -36,6 +36,9 @@ public class ActionGo extends BaseAction {
             if (null == a) {
                 a = StrategyUtil.getTheClosedWorkByRoleId(r.getId(), mainContent);
             }
+            if (null == a) {
+                return NodeStatus.Failure;
+            }
             a.setrPoint(r.getPoint());
             a.setDistance(r.getPoint().getDistance(a.getwPoint()));
             a.setGo(true);
@@ -45,7 +48,6 @@ public class ActionGo extends BaseAction {
 
             // 填充目标点
             mainContent.getrIdAndAvailbleWorkInfoMap().put(rId, a);
-
             return NodeStatus.Success;
         }
         return NodeStatus.Failure;

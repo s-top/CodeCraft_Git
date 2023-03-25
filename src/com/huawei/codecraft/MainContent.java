@@ -39,14 +39,16 @@ public class MainContent {
     Map<Integer, AvailbleWorkInfo> rIdAndAvailbleWorkInfoMap;
 
     Map<Integer, List<Integer>> rIdAndWids = new HashMap<>();
+
     {
-        rIdAndWids.put(0, Collections.singletonList(1));
+        rIdAndWids.put(0, Arrays.asList(1, 2));
         rIdAndWids.put(1, Arrays.asList(2, 3));
-        rIdAndWids.put(2, Arrays.asList(4, 5, 6));
-        rIdAndWids.put(3, Collections.singletonList(7));
+        rIdAndWids.put(2, Arrays.asList(1, 3));
+        rIdAndWids.put(3, Arrays.asList(4, 5, 6));
     }
 
     Map<Integer, List<Integer>> pIdAndWids = new HashMap<>();
+
     {
         pIdAndWids.put(1, Arrays.asList(4, 5, 9));
         pIdAndWids.put(2, Arrays.asList(4, 6, 9));

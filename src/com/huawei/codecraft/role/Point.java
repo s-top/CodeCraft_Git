@@ -1,5 +1,7 @@
 package com.huawei.codecraft.role;
 
+import com.huawei.codecraft.constant.Constants;
+
 /**
  * 坐标
  */
@@ -52,17 +54,17 @@ public class Point {
     /**
      * 获取象限
      */
-    public int getQuardrant(Point p) {
+    public float getQuardrant(Point p) {
         if (p == null) {
-            return 0;
+            return Constants.Point.FLOAT_ZERO;
         }
-        if (Float.compare(p.y, this.y) > 0) {
-            // 一、二象限
-            return 12;
-        } else {
-            // 三、四象限
-            return 34;
+        float distanceX = p.x - this.x;
+        float distanceY = p.y - this.y;
+        float currentDegree = (float) Math.atan2(distanceY, distanceX);
+        if (Float.compare(currentDegree, Constants.Point.FLOAT_ZERO) < 0) {
+            return (int) (currentDegree + 2 * Math.PI);
         }
+        return currentDegree;
     }
 
     @Override

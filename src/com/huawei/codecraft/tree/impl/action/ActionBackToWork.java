@@ -36,6 +36,9 @@ public class ActionBackToWork extends BaseAction {
             if (null == a) {
                 a = StrategyUtil.getTheClosedWorkByProductId(r, mainContent);
             }
+            if (null == a) {
+                return NodeStatus.Failure;
+            }
             a.setrPoint(r.getPoint());
             a.setDistance(r.getPoint().getDistance(a.getwPoint()));
             a.setGo(false);

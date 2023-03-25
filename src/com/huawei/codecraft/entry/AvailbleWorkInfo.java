@@ -69,4 +69,10 @@ public class AvailbleWorkInfo {
     public void setGo(boolean go) {
         isGo = go;
     }
+
+    @Override
+    public String toString() {
+        return "AvailbleWorkInfo{" + "rId=" + rId + ", wId=" + wId + ", wIndex=" + wIndex
+                + ", rPoint=" + rPoint + ", wPoint=" + wPoint + ", distance=" + distance + ", isGo=" + isGo + "}";
+    }
 }

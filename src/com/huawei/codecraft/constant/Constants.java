@@ -66,10 +66,14 @@ public interface Constants {
 
     interface Point {
         int INT_ZERO = 0;
-        float FLOAT_ZERO = 0;
+        float FLOAT_ZERO = 0.0f;
 
-        float STEP_FU = -0.1f;
-        float STEP_ZHENG = 0.1f;
-        float DEFAULT_SPEED = 2f;
+        float STEP_FU = -0.001f;
+        float STEP_ZHENG = 0.001f;
+        float DEFAULT_SPEED = 6f;
+
+        float DEFAULT_SPEED_FU = -2f;
+        float MAP_MIN_SIZE = 0.25f;
+        float MAP_MAX_SIZE = 49.75f;
     }
 }
