@@ -46,7 +46,7 @@ public class TreeUtil {
                 .end();
             behaviorTree.process();
         }
-        for (int i = 2; i < 3; i++) {
+        for (int i = 2; i < 4; i++) {
             BTreeBuilder treeBuilder = new BTreeBuilder();
             BTree behaviorTree = treeBuilder
                     .addBehaviour(new SelectorImpl())
@@ -62,6 +62,7 @@ public class TreeUtil {
                                 .addBehaviour(new ConditionOutOfMap(mainContent, i)).back()
                                 .addBehaviour(new ActionBackToMap(mainContent, builder, i)).back()
                             .back()
+                            .addBehaviour(new ActionBackToWorkT(mainContent, builder, i)).back()
                             .addBehaviour(new ActionBackToWork(mainContent, builder, i)).back()
                         .back()
                         .addBehaviour(new SelectorImpl())
@@ -80,7 +81,7 @@ public class TreeUtil {
                                 .addBehaviour(new ConditionLevelTwoWorkReady(mainContent, i)).back()
                                 .addBehaviour(new ActionGoLevelTwo(mainContent, builder, i)).back()
                             .back()
-                            .addBehaviour(new ActionGo(mainContent, builder, i)).back()
+                            .addBehaviour(new ActionGoLevelOne(mainContent, builder, i)).back()
                         .back()
                     .end();
             behaviorTree.process();

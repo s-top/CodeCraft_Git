@@ -4,10 +4,8 @@ import com.huawei.codecraft.MainContent;
 import com.huawei.codecraft.constant.NodeStatus;
 import com.huawei.codecraft.entry.AvailbleWorkInfo;
 import com.huawei.codecraft.role.Robot;
-import com.huawei.codecraft.role.Workbench;
 import com.huawei.codecraft.tree.ITree;
 import com.huawei.codecraft.tree.base.BaseAction;
-import com.huawei.codecraft.utils.LogUtil;
 import com.huawei.codecraft.utils.StrategyUtil;
 
 public class ActionGo extends BaseAction {

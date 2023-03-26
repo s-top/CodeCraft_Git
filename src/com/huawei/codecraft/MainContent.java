@@ -42,14 +42,14 @@ public class MainContent {
 
     {
         rIdAndWids.put(0, Collections.singletonList(1));
-        rIdAndWids.put(1, Arrays.asList(2, 3));
-        rIdAndWids.put(2, Arrays.asList(1, 2, 3));
+        rIdAndWids.put(1, Arrays.asList(3, 2));
+        rIdAndWids.put(2, Arrays.asList(4, 5, 6));
         rIdAndWids.put(3, Collections.singletonList(7));
     }
 
-    List<Integer> levelOneWorkIds = Arrays.asList(1, 2, 3);
+    List<Integer> levelOneWorkIds = Arrays.asList(3, 2, 1);
 
-    List<Integer> levelTwoWorkIds = Arrays.asList(4, 5, 6);
+    List<Integer> levelTwoWorkIds = Arrays.asList(6, 5, 4);
 
     List<Integer> levelThreeWorkIds = Collections.singletonList(7);
 
